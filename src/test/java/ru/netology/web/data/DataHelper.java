@@ -37,14 +37,12 @@ public class DataHelper {
         private String numCard;
     }
 
-    private static final Faker faker = new Faker(new Locale("en"));
-
-    public static CardsInfo getFirstCardsInfo(AuthInfo authInfo) {
-        return new CardsInfo(faker.number().numberBetween(0, 10000), "5559 0000 0000 0002");
+    public static CardsInfo getFirstCardsInfo(int sumFirst) {
+        return new CardsInfo(sumFirst, "5559 0000 0000 0002");
     }
 
-    public static CardsInfo getSecondCardsInfo(AuthInfo authInfo) {
-        return new CardsInfo(faker.number().numberBetween(0, 10000), "5559 0000 0000 0001");
+    public static CardsInfo getSecondCardsInfo(int sumSecond) {
+        return new CardsInfo(sumSecond, "5559 0000 0000 0001");
     }
 }
 

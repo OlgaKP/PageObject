@@ -1,15 +1,21 @@
 package ru.netology.web.test;
 
 import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.web.data.DataHelper;
+import ru.netology.web.page.DashboardPage;
 import ru.netology.web.page.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MoneyTransferTest {
-    @Test
-    void shouldTransferMoneyBetweenOwnCards() {
+
+    int amount = 100;
+
+    @BeforeEach
+    void setUp() {
         open("http://localhost:9999");
         Configuration.holdBrowserOpen = true;
         var loginPage = new LoginPage();
@@ -17,53 +23,34 @@ class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         var dashboardPage = verificationPage.validVerify(verificationCode);
-        var verificationFirstCard = DataHelper.getFirstCardsInfo(authInfo);
-        var cardFirst = dashboardPage.personFirstCard();
-        var amountFirst = cardFirst.card(verificationFirstCard);
     }
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsWithTwoIntoOne() {
-        open("http://localhost:9999");
-        Configuration.holdBrowserOpen = true;
-        var loginPage = new LoginPage();
-        var authInfo = DataHelper.getAuthInfo();
-        var verificationPage = loginPage.validLogin(authInfo);
-        var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
-        var dashboardPage = verificationPage.validVerify(verificationCode);
-        var verificationSecondCard = DataHelper.getSecondCardsInfo(authInfo);
-        var cardSecond = dashboardPage.personSecondCard();
-        var amountSecond = cardSecond.card(verificationSecondCard);
+    void shouldTransferMoneyBetweenOwnCardsWith1Into2() {
+        var dashboardPage = new DashboardPage();
+        var balanceFirstBefore = dashboardPage.getCardBalance(0);
+        var balanceSecondBefore = dashboardPage.getCardBalance(1);
+        var balanceFirstAfter = balanceFirstBefore + amount;
+        var balanceSecondAfter = balanceSecondBefore - amount;
+        var verificationFirstCard = DataHelper.getFirstCardsInfo(amount);
+        dashboardPage.personFirstCard().card(verificationFirstCard);
+
+        assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
+        assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
     }
 
     @Test
-    void shouldGetFirstCardBalance() {
-        open("http://localhost:9999");
-        Configuration.holdBrowserOpen = true;
-        var loginPage = new LoginPage();
-        var authInfo = DataHelper.getAuthInfo();
-        var verificationPage = loginPage.validLogin(authInfo);
-        var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
-        var dashboardPage = verificationPage.validVerify(verificationCode);
-        var balanceFirstCard = dashboardPage.getFirstCardBalance();
-        System.out.println("=============");
-        System.out.println("   " + balanceFirstCard);
-        System.out.println("=============");
-    }
+    void shouldTransferMoneyBetweenOwnCardsWith2Into1() {
+        var dashboardPage = new DashboardPage();
+        var balanceFirstBefore = dashboardPage.getCardBalance(0);
+        var balanceSecondBefore = dashboardPage.getCardBalance(1);
+        var balanceFirstAfter = balanceFirstBefore - amount;
+        var balanceSecondAfter = balanceSecondBefore + amount;
+        var verificationSecondCard = DataHelper.getSecondCardsInfo(amount);
+        dashboardPage.personSecondCard().card(verificationSecondCard);
 
-    @Test
-    void shouldGetSecondCardBalance() {
-        open("http://localhost:9999");
-        Configuration.holdBrowserOpen = true;
-        var loginPage = new LoginPage();
-        var authInfo = DataHelper.getAuthInfo();
-        var verificationPage = loginPage.validLogin(authInfo);
-        var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
-        var dashboardPage = verificationPage.validVerify(verificationCode);
-        var balanceSecondCard = dashboardPage.getSecondCardBalance();
-        System.out.println("=============");
-        System.out.println("   " + balanceSecondCard);
-        System.out.println("=============");
+        assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
+        assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
     }
 
 }

@@ -22,13 +22,8 @@ public class DashboardPage {
         heading.shouldBe(visible);
     }
 
-    public int getFirstCardBalance() {
-        val text = cards.first().text();
-        return extractBalance(text);
-    }
-
-    public int getSecondCardBalance() {
-        val text = cards.last().text();
+    public int getCardBalance(int i) {
+        val text = cards.get(i).text();
         return extractBalance(text);
     }
 
@@ -48,4 +43,5 @@ public class DashboardPage {
         buttonSecond.click();
         return new CardPage();
     }
+
 }
