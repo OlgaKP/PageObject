@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MoneyTransferTest {
 
     int amount = 100;
+    int bigSum = 21000;
 
     @BeforeEach
     void setUp() {
@@ -47,6 +48,20 @@ class MoneyTransferTest {
         var balanceFirstAfter = balanceFirstBefore - amount;
         var balanceSecondAfter = balanceSecondBefore + amount;
         var verificationSecondCard = DataHelper.getSecondCardsInfo(amount);
+        dashboardPage.personSecondCard().card(verificationSecondCard);
+
+        assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
+        assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
+    }
+
+    @Test
+    void shouldTransferMoneyBetweenOwnCardsBigSum() {
+        var dashboardPage = new DashboardPage();
+        var balanceFirstBefore = dashboardPage.getCardBalance(0);
+        var balanceSecondBefore = dashboardPage.getCardBalance(1);
+        var balanceFirstAfter = balanceFirstBefore - bigSum;
+        var balanceSecondAfter = balanceSecondBefore + bigSum;
+        var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
         dashboardPage.personSecondCard().card(verificationSecondCard);
 
         assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
