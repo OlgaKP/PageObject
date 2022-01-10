@@ -24,6 +24,19 @@ class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         var dashboardPage = verificationPage.validVerify(verificationCode);
+
+        var balance1 = dashboardPage.getCardBalance(0);
+        var balance2 = dashboardPage.getCardBalance(1);
+        if (balance1 > balance2) {
+            int balance = (balance1 - balance2) / 2;
+            dashboardPage.personSecondCard().card(DataHelper.getSecondCardsInfo(balance));
+            dashboardPage.personFirstCard().card(DataHelper.getFirstCardsInfo(-balance));
+        }
+        else if (balance1 < balance2) {
+            int balance = (balance2 - balance1) / 2;
+            dashboardPage.personFirstCard().card(DataHelper.getFirstCardsInfo(balance));
+            dashboardPage.personSecondCard().card(DataHelper.getSecondCardsInfo(-balance));
+        }
     }
 
     @Test
@@ -58,8 +71,7 @@ class MoneyTransferTest {
     void shouldTransferMoneyBetweenOwnCardsBigSum() {
         var dashboardPage = new DashboardPage();
         var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-        var errorOfSecond = dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
-        assertEquals("Ошибка", errorOfSecond);
+        dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
     }
 
 }
