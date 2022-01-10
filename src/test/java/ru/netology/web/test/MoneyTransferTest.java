@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MoneyTransferTest {
 
-    int amount = 100;
-    int bigSum = 21000;
+    int amount = 5;
+    int bigSum = 22000;
 
     @BeforeEach
     void setUp() {
@@ -57,15 +57,9 @@ class MoneyTransferTest {
     @Test
     void shouldTransferMoneyBetweenOwnCardsBigSum() {
         var dashboardPage = new DashboardPage();
-        var balanceFirstBefore = dashboardPage.getCardBalance(0);
-        var balanceSecondBefore = dashboardPage.getCardBalance(1);
-        var balanceFirstAfter = balanceFirstBefore - bigSum;
-        var balanceSecondAfter = balanceSecondBefore + bigSum;
         var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-        dashboardPage.personSecondCard().card(verificationSecondCard);
-
-        assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
-        assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
+        var errorOfSecond = dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
+        assertEquals("Ошибка", errorOfSecond);
     }
 
 }
