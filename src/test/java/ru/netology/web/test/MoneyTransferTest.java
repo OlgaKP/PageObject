@@ -58,8 +58,7 @@ class MoneyTransferTest {
     void shouldTransferMoneyBetweenOwnCardsBigSum() {
         var dashboardPage = new DashboardPage();
         var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-        var errorOfSecond = dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
-        assertEquals("Ошибка", errorOfSecond);
+        dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
     }
 
 }
