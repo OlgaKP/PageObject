@@ -1,6 +1,7 @@
 package ru.netology.web.test;
 
 import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.web.data.DataHelper;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MoneyTransferTest {
 
-    int amount = 5;
+    int amount = 500;
     int bigSum = 22000;
 
     @BeforeEach
@@ -30,12 +31,10 @@ class MoneyTransferTest {
         if (balance1 > balance2) {
             int balance = (balance1 - balance2) / 2;
             dashboardPage.personSecondCard().card(DataHelper.getSecondCardsInfo(balance));
-            dashboardPage.personFirstCard().card(DataHelper.getFirstCardsInfo(-balance));
         }
         else if (balance1 < balance2) {
             int balance = (balance2 - balance1) / 2;
             dashboardPage.personFirstCard().card(DataHelper.getFirstCardsInfo(balance));
-            dashboardPage.personSecondCard().card(DataHelper.getSecondCardsInfo(-balance));
         }
     }
 
@@ -67,12 +66,12 @@ class MoneyTransferTest {
         assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
     }
 
-    @Test
-    void shouldTransferMoneyBetweenOwnCardsBigSum() {
-        var dashboardPage = new DashboardPage();
-        var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-        dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
-    }
+//    @Test
+//    void shouldTransferMoneyBetweenOwnCardsBigSum() {
+//        var dashboardPage = new DashboardPage();
+//        var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
+//        dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
+//    }
 
 }
 

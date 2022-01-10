@@ -22,4 +22,5 @@ public class CardPage {
         buttonFrom.click();
         return new DashboardPage();
     }
+
 }
