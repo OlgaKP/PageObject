@@ -66,12 +66,12 @@ class MoneyTransferTest {
         assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
     }
 
-//    @Test
-//    void shouldTransferMoneyBetweenOwnCardsBigSum() {
-//        var dashboardPage = new DashboardPage();
-//        var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-//        dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
-//    }
+    @Test
+    void shouldTransferMoneyBetweenOwnCardsBigSum() {
+        var dashboardPage = new DashboardPage();
+        var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
+        dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
+    }
 
 }
 
