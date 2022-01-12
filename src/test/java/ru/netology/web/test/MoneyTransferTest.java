@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MoneyTransferTest {
 
     int amount = 500;
-    int bigSum = 22000;
+    int bigSum = 21000;
 
     @BeforeEach
     void setUp() {
