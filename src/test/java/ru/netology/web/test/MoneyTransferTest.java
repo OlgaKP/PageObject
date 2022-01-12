@@ -1,10 +1,10 @@
 package ru.netology.web.test;
 
 import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.web.data.DataHelper;
+import ru.netology.web.page.CardPage;
 import ru.netology.web.page.DashboardPage;
 import ru.netology.web.page.LoginPage;
 
@@ -19,7 +19,7 @@ class MoneyTransferTest {
     @BeforeEach
     void setUp() {
         open("http://localhost:9999");
-        Configuration.holdBrowserOpen = true;
+//        Configuration.holdBrowserOpen = true;
         var loginPage = new LoginPage();
         var authInfo = DataHelper.getAuthInfo();
         var verificationPage = loginPage.validLogin(authInfo);
@@ -30,11 +30,11 @@ class MoneyTransferTest {
         var balance2 = dashboardPage.getCardBalance(1);
         if (balance1 > balance2) {
             int balance = (balance1 - balance2) / 2;
-            dashboardPage.personSecondCard().card(DataHelper.getSecondCardsInfo(balance));
+            dashboardPage.personSecondCard().card(DataHelper.getSecondCardsInfo(balance), true);
         }
         else if (balance1 < balance2) {
             int balance = (balance2 - balance1) / 2;
-            dashboardPage.personFirstCard().card(DataHelper.getFirstCardsInfo(balance));
+            dashboardPage.personFirstCard().card(DataHelper.getFirstCardsInfo(balance), true);
         }
     }
 
@@ -46,7 +46,7 @@ class MoneyTransferTest {
         var balanceFirstAfter = balanceFirstBefore + amount;
         var balanceSecondAfter = balanceSecondBefore - amount;
         var verificationFirstCard = DataHelper.getFirstCardsInfo(amount);
-        dashboardPage.personFirstCard().card(verificationFirstCard);
+        dashboardPage.personFirstCard().card(verificationFirstCard, true);
 
         assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
         assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
@@ -60,7 +60,7 @@ class MoneyTransferTest {
         var balanceFirstAfter = balanceFirstBefore - amount;
         var balanceSecondAfter = balanceSecondBefore + amount;
         var verificationSecondCard = DataHelper.getSecondCardsInfo(amount);
-        dashboardPage.personSecondCard().card(verificationSecondCard);
+        dashboardPage.personSecondCard().card(verificationSecondCard, true);
 
         assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
         assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
@@ -70,7 +70,7 @@ class MoneyTransferTest {
     void shouldTransferMoneyBetweenOwnCardsBigSum() {
         var dashboardPage = new DashboardPage();
         var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-        dashboardPage.personSecondCard().card(verificationSecondCard).errorMessenger();
+        dashboardPage.personSecondCard().card(verificationSecondCard, false);
     }
 
 }
