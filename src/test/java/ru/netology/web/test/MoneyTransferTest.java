@@ -71,15 +71,13 @@ class MoneyTransferTest {
         var dashboardPage = new DashboardPage(); // балансы карт проерить
         var balanceFirstBefore = dashboardPage.getCardBalance(0);
         var balanceSecondBefore = dashboardPage.getCardBalance(1);
-        var balanceFirstAfter = balanceFirstBefore - bigSum;
-        var balanceSecondAfter = balanceSecondBefore + bigSum;
         var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-        var verificationTransferMoney = dashboardPage.personSecondCard().transferMoney(verificationSecondCard);
-        var errorMessage = new CardPage();
-        errorMessage.getErrorAmount();
+        var transferPage = dashboardPage.personSecondCard();
+        transferPage.transferMoney(verificationSecondCard);
+        transferPage.getErrorAmount();
 
-        assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
-        assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
+        assertEquals(balanceFirstBefore, dashboardPage.getCardBalance(0));
+        assertEquals(balanceSecondBefore, dashboardPage.getCardBalance(1));
     }
 
 }
