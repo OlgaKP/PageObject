@@ -68,7 +68,7 @@ class MoneyTransferTest {
 
     @Test
     void shouldTransferMoneyOverLimit() {
-        var dashboardPage = new DashboardPage(); // балансы карт проерить
+        var dashboardPage = new DashboardPage(); 
         var balanceFirstBefore = dashboardPage.getCardBalance(0);
         var balanceSecondBefore = dashboardPage.getCardBalance(1);
         var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
@@ -76,7 +76,7 @@ class MoneyTransferTest {
         transferPage.transferMoney(verificationSecondCard);
         transferPage.getErrorAmount();
 
-        assertEquals(balanceFirstBefore, dashboardPage.getCardBalance(0));
+        assertEquals(balanceFirstBefore, dashboardPage.getCardBalance(0)); //перевод не должен сработать, поэтому balanceFirstBefore
         assertEquals(balanceSecondBefore, dashboardPage.getCardBalance(1));
     }
 
