@@ -19,19 +19,16 @@ public class CardPage {
         amount.shouldBe(visible);
     }
 
-    public DashboardPage card(DataHelper.CardsInfo cardsInfo, boolean err) {
+    public DashboardPage transferMoney(DataHelper.CardsInfo cardsInfo) {
         sumAmount.sendKeys(Keys.chord(Keys.CONTROL,"a"),Keys.DELETE);
         sumAmount.setValue(String.valueOf(cardsInfo.getSum()));
         sumFrom.sendKeys(Keys.chord(Keys.CONTROL,"a"),Keys.DELETE);
         sumFrom.setValue(cardsInfo.getNumCard());
         buttonFrom.click();
-        if (!err) {
-            errorMessenger();
-        }
         return new DashboardPage();
     }
 
-    public SelenideElement errorMessenger() {
+    public SelenideElement getErrorAmount() {
         return errorAmount.shouldBe(visible);
     }
 

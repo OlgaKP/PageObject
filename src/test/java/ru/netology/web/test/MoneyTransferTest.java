@@ -30,11 +30,11 @@ class MoneyTransferTest {
         var balance2 = dashboardPage.getCardBalance(1);
         if (balance1 > balance2) {
             int balance = (balance1 - balance2) / 2;
-            dashboardPage.personSecondCard().card(DataHelper.getSecondCardsInfo(balance), true);
+            dashboardPage.personSecondCard().transferMoney(DataHelper.getSecondCardsInfo(balance));
         }
         else if (balance1 < balance2) {
             int balance = (balance2 - balance1) / 2;
-            dashboardPage.personFirstCard().card(DataHelper.getFirstCardsInfo(balance), true);
+            dashboardPage.personFirstCard().transferMoney(DataHelper.getFirstCardsInfo(balance));
         }
     }
 
@@ -46,7 +46,7 @@ class MoneyTransferTest {
         var balanceFirstAfter = balanceFirstBefore + amount;
         var balanceSecondAfter = balanceSecondBefore - amount;
         var verificationFirstCard = DataHelper.getFirstCardsInfo(amount);
-        dashboardPage.personFirstCard().card(verificationFirstCard, true);
+        dashboardPage.personFirstCard().transferMoney(verificationFirstCard);
 
         assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
         assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
@@ -60,17 +60,26 @@ class MoneyTransferTest {
         var balanceFirstAfter = balanceFirstBefore - amount;
         var balanceSecondAfter = balanceSecondBefore + amount;
         var verificationSecondCard = DataHelper.getSecondCardsInfo(amount);
-        dashboardPage.personSecondCard().card(verificationSecondCard, true);
+        dashboardPage.personSecondCard().transferMoney(verificationSecondCard);
 
         assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
         assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
     }
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsBigSum() {
-        var dashboardPage = new DashboardPage();
+    void shouldTransferMoneyOverLimit() {
+        var dashboardPage = new DashboardPage(); // балансы карт проерить
+        var balanceFirstBefore = dashboardPage.getCardBalance(0);
+        var balanceSecondBefore = dashboardPage.getCardBalance(1);
+        var balanceFirstAfter = balanceFirstBefore - bigSum;
+        var balanceSecondAfter = balanceSecondBefore + bigSum;
         var verificationSecondCard = DataHelper.getSecondCardsInfo(bigSum);
-        dashboardPage.personSecondCard().card(verificationSecondCard, false);
+        var verificationTransferMoney = dashboardPage.personSecondCard().transferMoney(verificationSecondCard);
+        var errorMessage = new CardPage();
+        errorMessage.getErrorAmount();
+
+        assertEquals(balanceFirstAfter, dashboardPage.getCardBalance(0));
+        assertEquals(balanceSecondAfter, dashboardPage.getCardBalance(1));
     }
 
 }
